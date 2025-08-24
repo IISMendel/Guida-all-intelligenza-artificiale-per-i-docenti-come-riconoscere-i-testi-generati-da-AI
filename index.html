@@ -36,6 +36,9 @@
     .imgPreview{max-height:140px;border:1px solid var(--border);border-radius:10px;display:none}
     label.inline{display:flex;align-items:center;gap:6px;font-size:12px;color:#334155}
     .footer{color:var(--muted);font-size:12px;margin-top:24px;text-align:center}
+    .sub-list{list-style-type:none; padding-left: 20px;}
+    .sub-list li { margin-bottom: 5px; }
+    .note{font-size:12px;color:var(--muted);border-left:2px solid var(--warn);padding-left:10px;margin-top:10px;}
   </style>
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.0.1/dist/tesseract.min.js"></script>
 </head>
@@ -82,6 +85,17 @@
           <span class="pill" id="cc">0 caratteri</span>
         </div>
       </div>
+
+      <div class="card" style="margin-top: 14px;">
+        <h3>Guida all'OCR (Estrazione Testo da Immagine)</h3>
+        <p class="sub">La funzionalità OCR ti permette di analizzare compiti scritti a mano o da scansioni. Per ottenere i risultati migliori, segui questi semplici consigli:</p>
+        <ul class="sub-list">
+          <li>**Qualità dell'immagine:** Assicurati che la foto sia ben illuminata e a fuoco. Evita ombre o riflessi che possano confondere l'algoritmo.</li>
+          <li>**Inquadratura:** L'immagine deve essere il più possibile "dritta" e perpendicolare alla pagina. L'OCR funziona meglio con testi allineati orizzontalmente.</li>
+          <li>**Scrittura chiara:** La qualità della scrittura è fondamentale. Una grafia illeggibile o molto stilizzata può generare errori.</li>
+          <li>**App per scansione:** Per risultati professionali, considera l'uso di app per smartphone come **Google Drive** o **Microsoft Office Lens**, che ottimizzano l'immagine prima dell'estrazione.</li>
+        </ul>
+      </div>
     </section>
 
     <section id="profili" class="section">
@@ -106,32 +120,72 @@
       <div class="card">
         <h3>Strumenti esterni gratuiti</h3>
         <ul>
-          <li><a href="https://gptzero.me/" target="_blank">GPTZero</a></li>
-          <li><a href="https://sapling.ai/ai-detector" target="_blank">Sapling AI Detector</a></li>
-          <li><a href="https://www.crossplag.com/ai-content-detector/" target="_blank">Crossplag AI Detector</a></li>
-          <li><a href="https://www.zerogpt.com/" target="_blank">ZeroGPT</a></li>
-          <li><a href="https://www.quetext.com/" target="_blank">Quetext</a> (plagio e AI)</li>
-          <li><a href="https://plagly.com/" target="_blank">Plagly</a> (plagio)</li>
-          <li><a href="https://copyleaks.com/ai-content-detector" target="_blank">Copyleaks AI Detector</a></li>
-          <li><a href="https://contentatscale.ai/ai-content-detector/" target="_blank">Content at Scale Detector</a></li>
-          <li><a href="https://writer.com/ai-content-detector/" target="_blank">Writer AI Detector</a></li>
+          <li>
+            <a href="https://gptzero.me/" target="_blank">GPTZero</a>
+            <div class="sub">Noto per la sua interfaccia semplice e la capacità di analizzare sia singoli testi che file interi.</div>
+          </li>
+          <li>
+            <a href="https://sapling.ai/ai-detector" target="_blank">Sapling AI Detector</a>
+            <div class="sub">Offre anche un'estensione per browser per un controllo rapido.</div>
+          </li>
+          <li>
+            <a href="https://www.crossplag.com/ai-content-detector/" target="_blank">Crossplag AI Detector</a>
+            <div class="sub">Rilevatore che analizza anche la struttura e la coerenza del testo.</div>
+          </li>
+          <li>
+            <a href="https://www.zerogpt.com/" target="_blank">ZeroGPT</a>
+            <div class="sub">Strumento popolare che fornisce una percentuale di probabilità di testo generato da AI.</div>
+          </li>
+          <li>
+            <a href="https://www.quetext.com/" target="_blank">Quetext</a>
+            <div class="sub">Combina il rilevamento di plagio con l'analisi di stile, utile per identificare testi non originali.</div>
+          </li>
+          <li>
+            <a href="https://plagly.com/" target="_blank">Plagly</a>
+            <div class="sub">Specifico per il rilevamento del plagio, utile per confrontare il testo con fonti online.</div>
+          </li>
+          <li>
+            <a href="https://copyleaks.com/ai-content-detector" target="_blank">Copyleaks AI Detector</a>
+            <div class="sub">Rilevatore molto preciso, offre anche una funzione di confronto tra documenti.</div>
+          </li>
+          <li>
+            <a href="https://writer.com/ai-content-detector/" target="_blank">Writer AI Detector</a>
+            <div class="sub">Molto usato anche per ottimizzare i contenuti per il web, con una funzione di rilevamento integrata.</div>
+          </li>
         </ul>
+        <div class="note">
+          ⚠️ **Nota importante:** Tutti gli strumenti di rilevamento di testo generato da AI non sono infallibili e possono generare falsi positivi o negativi. Usali come uno strumento di supporto, non come unica prova.
+        </div>
       </div>
     </section>
 
     <section id="metodi" class="section">
       <div class="card">
         <h3>Metodi di verifica</h3>
-        <p>Esempi di strategie per verificare se un compito è autentico:</p>
-        <ul>
+        <p>Esempi di strategie per verificare se un compito è autentico, applicabili a diverse discipline:</p>
+        
+        <h4>Verifica Orale</h4>
+        <ul class="sub-list">
           <li>Domande orali flash su contenuti del compito</li>
+          <li>Brevi colloqui di conferma subito dopo la consegna</li>
+        </ul>
+        
+        <h4>Verifica di Autenticità del Contenuto</h4>
+        <ul class="sub-list">
           <li>Richiesta di riferimenti a esperienze personali di laboratorio/azienda</li>
           <li>Inserimento di errori o dati anomali da discutere</li>
           <li>Compiti con raccolta di dati reali (foto con metadati, grafici, misurazioni)</li>
-          <li>Brevi colloqui di conferma subito dopo la consegna</li>
+        </ul>
+        
+        <h4>Verifica Scritta e Operativa</h4>
+        <ul class="sub-list">
           <li>Verifiche a tempo con domande a risposta breve</li>
           <li>Richiesta di risolvere lo stesso problema con due metodi diversi</li>
           <li>Produzione di mappe concettuali disegnate a mano</li>
+        </ul>
+
+        <h4>Verifica Comparativa</h4>
+        <ul class="sub-list">
           <li>Confronto scritto/orale dei contenuti</li>
           <li>Commento di errori presenti o possibili alternative</li>
         </ul>
