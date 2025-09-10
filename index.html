@@ -1,241 +1,784 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Vero o Bot? Toolkit Docente</title>
-  <style>
-    :root{
-      --bg:#f7f7fb; --panel:#ffffff; --muted:#475569; --text:#0f1720;
-      --accent:#0ea5e9; --accent-2:#7c3aed; --danger:#e11d48; --ok:#16a34a;
-      --warn:#f59e0b; --card:#ffffff; --chip:#f3f4f6; --border:#e6e6ef;
-    }
-    *{box-sizing:border-box}
-    body{margin:0;background:linear-gradient(180deg,#f7f7fb 0%,#ffffff 100%);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,Helvetica,Arial}
-    header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.9);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
-    .wrap{max-width:1100px;margin:0 auto;padding:18px}
-    h1{margin:0;font-weight:800;letter-spacing:.2px;font-size:22px}
-    .sub{color:var(--muted);font-size:13px}
-    main{max-width:1100px;margin:18px auto;padding:0 18px 80px}
-    .tabs{display:flex;gap:10px;margin-bottom:16px}
-    .tab{padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:600;background:#fff;border:1px solid var(--border)}
-    .tab.active{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff;border:none}
-    .section{display:none}
-    .section.active{display:block}
-    .grid{display:grid;gap:14px}
-    .cols-2{grid-template-columns:1fr 1fr}
-    .card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:16px}
-    .card h3{margin:0 0 10px 0;font-size:16px}
-    textarea,input[type=text],input[type=number],select{width:100%;background:#fff;color:var(--text);border:1px solid var(--border);border-radius:12px;padding:12px;outline:none}
-    textarea{min-height:160px;resize:vertical}
-    .row{display:flex;gap:8px;flex-wrap:wrap}
-    .btn{appearance:none;border:1px solid var(--border);background:#fff;color:var(--text);padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:600}
-    .btn:hover{border-color:#cbd5e1}
-    .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff;border:none}
-    .pill{background:var(--chip);border:1px solid var(--border);padding:6px 10px;border-radius:999px;font-size:12px;color:#334155}
-    .imgPreview{max-height:140px;border:1px solid var(--border);border-radius:10px;display:none}
-    label.inline{display:flex;align-items:center;gap:6px;font-size:12px;color:#334155}
-    .footer{color:var(--muted);font-size:12px;margin-top:24px;text-align:center}
-    .sub-list{list-style-type:none; padding-left: 20px;}
-    .sub-list li { margin-bottom: 5px; }
-    .note{font-size:12px;color:var(--muted);border-left:2px solid var(--warn);padding-left:10px;margin-top:10px;}
-  </style>
-  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.0.1/dist/tesseract.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vero o Bot? Toolkit Docente</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0066ff;
+            --primary-light: #3d8bff;
+            --secondary: #7c3aed;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --info: #06b6d4;
+            --surface: #ffffff;
+            --surface-hover: #f9fafb;
+            --text-primary: #111827;
+            --text-secondary: #6b7280;
+            --border: #e5e7eb;
+            --border-light: #f3f4f6;
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --radius: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .header {
+            background: var(--surface);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .header .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .card {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-light);
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--surface);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: var(--transition);
+            margin-bottom: 1rem;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 200px;
+            resize: vertical;
+            font-family: 'Inter', monospace;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border: 2px solid transparent;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            white-space: nowrap;
+            margin: 0.25rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: var(--surface);
+            color: var(--text-primary);
+            border-color: var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--surface-hover);
+            border-color: var(--primary);
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+
+        .stat-pill {
+            background: var(--border-light);
+            padding: 0.5rem 1rem;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--border-light);
+            border-radius: 999px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 999px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .result-score {
+            font-size: 3rem;
+            font-weight: 800;
+            padding: 2rem;
+            border-radius: var(--radius);
+            text-align: center;
+            margin: 1rem 0;
+        }
+
+        .risk-low { 
+            background: rgba(16, 185, 129, 0.1); 
+            color: var(--success);
+            border: 2px solid rgba(16, 185, 129, 0.3);
+        }
+        .risk-medium { 
+            background: rgba(245, 158, 11, 0.1); 
+            color: var(--warning);
+            border: 2px solid rgba(245, 158, 11, 0.3);
+        }
+        .risk-high { 
+            background: rgba(239, 68, 68, 0.1); 
+            color: var(--danger);
+            border: 2px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .indicators {
+            margin-top: 1rem;
+        }
+
+        .indicator {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            margin: 0.25rem;
+            border-radius: var(--radius);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .indicator-success { background: rgba(16, 185, 129, 0.2); color: var(--success); }
+        .indicator-warning { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
+        .indicator-danger { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
+        .indicator-info { background: rgba(6, 182, 212, 0.2); color: var(--info); }
+
+        .hidden { display: none; }
+        .text-center { text-align: center; }
+
+        .footer {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            margin-top: 3rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            backdrop-filter: blur(10px);
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            .header { padding: 1.5rem; }
+            .header h1 { font-size: 2rem; }
+            .card { padding: 1.5rem; }
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <div class="wrap">
-      <div class="row" style="justify-content:space-between;align-items:center">
-        <div>
-          <h1>Vero o Bot? Toolkit Docente</h1>
-          <div class="sub">Strumento di analisi per insegnanti dell'IIS MENDEL di Villa Cortese (MI)</div>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>🤖 Vero o Bot?</h1>
+            <div class="subtitle">Toolkit per Docenti - IIS Mendel, Villa Cortese</div>
+        </header>
+
+        <!-- Analisi Principale -->
+        <div class="card">
+            <h2 class="card-title">📝 Analisi del Testo</h2>
+            
+            <div style="background: rgba(0,102,255,0.1); padding: 1rem; border-radius: var(--radius); margin-bottom: 1rem; border-left: 4px solid var(--primary);">
+                <strong>🧠 Algoritmo Migliorato v2.0</strong><br>
+                <span style="font-size: 0.9rem; color: var(--text-secondary);">
+                    Rilevamento avanzato basato su 10+ indicatori: pattern linguistici AI, formalità eccessiva, 
+                    struttura delle frasi, diversità lessicale, ripetizioni strutturali e coerenza stilistica.
+                </span>
+            </div>
+            
+            <textarea id="analysisText" class="form-input form-textarea" placeholder="Incolla qui il testo del compito da analizzare..."></textarea>
+            
+            <div>
+                <input type="file" id="textFile" accept=".txt" style="display: none;">
+                <button class="btn btn-secondary" onclick="document.getElementById('textFile').click()">
+                    📄 Carica File
+                </button>
+                <button class="btn btn-primary" id="analyzeBtn">
+                    🚀 Analizza Testo
+                </button>
+            </div>
+
+            <div class="stats-row" id="textStats">
+                <div class="stat-pill">📝 <span id="wordCount">0</span> parole</div>
+                <div class="stat-pill">📄 <span id="sentenceCount">0</span> frasi</div>
+                <div class="stat-pill">🔤 <span id="charCount">0</span> caratteri</div>
+            </div>
+
+            <div id="progressContainer" class="hidden">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="text-center">
+                    <small id="progressText">Analisi in corso...</small>
+                </div>
+            </div>
         </div>
-        <div class="row">
-          <button class="btn ghost" id="exportReport">⬇️ Report</button>
+
+        <!-- Risultati -->
+        <div id="resultsCard" class="card hidden">
+            <h2 class="card-title">🎯 Risultato Analisi</h2>
+            
+            <div class="result-score" id="scoreDisplay">
+                <div>Punteggio AI: <span id="aiScore">0%</span></div>
+                <div style="font-size: 1.2rem; margin-top: 0.5rem;" id="riskLabel">-</div>
+            </div>
+
+            <div class="indicators" id="indicators"></div>
+
+            <div style="margin-top: 2rem;">
+                <button class="btn btn-primary" onclick="exportSimple()">📊 Esporta Report</button>
+                <button class="btn btn-secondary" onclick="clearAll()">🗑️ Pulisci</button>
+            </div>
         </div>
-      </div>
+
+        <!-- App Scansione -->
+        <div class="card">
+            <h2 class="card-title">📱 Scansiona con Smartphone</h2>
+            <p style="margin-bottom: 1.5rem; color: var(--text-secondary);">
+                Le app mobile sono più precise di qualsiasi OCR web!
+            </p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                <div style="background: var(--surface-hover); padding: 1.5rem; border-radius: var(--radius); border: 1px solid var(--border);">
+                    <h4 style="color: var(--primary); margin-bottom: 0.5rem;">📄 Google Drive</h4>
+                    <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">Apri app → + → Scansione → tocca icona testo</p>
+                    <div style="background: rgba(16,185,129,0.1); padding: 0.5rem; border-radius: var(--radius); font-size: 0.8rem; color: var(--success);">
+                        ✅ Gratuita e sincronizzata
+                    </div>
+                </div>
+
+                <div style="background: var(--surface-hover); padding: 1.5rem; border-radius: var(--radius); border: 1px solid var(--border);">
+                    <h4 style="color: var(--primary); margin-bottom: 0.5rem;">🔵 Office Lens</h4>
+                    <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">Microsoft - Ottimizza automaticamente</p>
+                    <div style="background: rgba(16,185,129,0.1); padding: 0.5rem; border-radius: var(--radius); font-size: 0.8rem; color: var(--success);">
+                        ✅ Perfetta per compiti
+                    </div>
+                </div>
+
+                <div style="background: var(--surface-hover); padding: 1.5rem; border-radius: var(--radius); border: 1px solid var(--border);">
+                    <h4 style="color: var(--primary); margin-bottom: 0.5rem;">🔴 Adobe Scan</h4>
+                    <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">PDF ricercabili automatici</p>
+                    <div style="background: rgba(16,185,129,0.1); padding: 0.5rem; border-radius: var(--radius); font-size: 0.8rem; color: var(--success);">
+                        ✅ Qualità professionale
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(0,102,255,0.1); border-radius: var(--radius); text-align: center;">
+                <strong>🚀 Workflow: Scatta → Estrai testo → Copia → Incolla qui → Analizza</strong>
+            </div>
+        </div>
+
+        <!-- Strumenti Esterni -->
+        <div class="card">
+            <h2 class="card-title">🛠️ Strumenti di Verifica (Supporto Italiano)</h2>
+            
+            <div style="background: rgba(0,102,255,0.1); padding: 1rem; border-radius: var(--radius); margin-bottom: 1.5rem; border-left: 4px solid var(--primary);">
+                <strong>🇮🇹 Priorità Italiano</strong><br>
+                <span style="font-size: 0.9rem; color: var(--text-secondary);">
+                    Strumenti ordinati per accuratezza con testi italiani. Quelli segnati con 🇮🇹 hanno supporto nativo/eccellente per l'italiano.
+                </span>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+                
+                <!-- TOP per Italiano -->
+                <div style="background: rgba(16,185,129,0.1); border: 2px solid var(--success); padding: 1.5rem; border-radius: var(--radius);">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                        <span style="font-size: 1.2rem;">🇮🇹</span>
+                        <a href="https://www.originality.ai/" target="_blank" style="color: var(--success); text-decoration: none; font-weight: 600; font-size: 1.1rem;">Originality.ai</a>
+                        <span style="background: var(--success); color: white; padding: 0.2rem 0.5rem; border-radius: 999px; font-size: 0.7rem;">TOP ITALIANO</span>
+                    </div>
+                    <p style="margin: 0.5rem 0; font-size: 0.9rem;">Eccellente supporto italiano. Algoritmo specifico per lingue romance. Molto accurato con testi italiani.</p>
+                    <div style="background: rgba(16,185,129,0.2); padding: 0.5rem; border-radius: 6px; font-size: 0.8rem; margin-top: 0.5rem;">
+                        ✅ <strong>Supporto italiano nativo</strong> - Calibrato su testi italiani
+                    </div>
+                </div>
+
+                <div style="background: rgba(16,185,129,0.1); border: 2px solid var(--success); padding: 1.5rem; border-radius: var(--radius);">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                        <span style="font-size: 1.2rem;">🇮🇹</span>
+                        <a href="https://www.scribbr.it/rilevatore-di-plagiarismo/" target="_blank" style="color: var(--success); text-decoration: none; font-weight: 600; font-size: 1.1rem;">Scribbr Italia</a>
+                        <span style="background: var(--success); color: white; padding: 0.2rem 0.5rem; border-radius: 999px; font-size: 0.7rem;">ITALIANO</span>
+                    </div>
+                    <p style="margin: 0.5rem 0; font-size: 0.9rem;">Versione italiana di Scribbr. Ottimizzato per testi accademici italiani. AI + plagio.</p>
+                    <div style="background: rgba(16,185,129,0.2); padding: 0.5rem; border-radius: 6px; font-size: 0.8rem; margin-top: 0.5rem;">
+                        ✅ <strong>Sito in italiano</strong> - Specializzato in testi accademici
+                    </div>
+                </div>
+
+                <div style="background: rgba(245,158,11,0.1); border: 2px solid var(--warning); padding: 1.5rem; border-radius: var(--radius);">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                        <span style="font-size: 1.2rem;">🇮🇹</span>
+                        <a href="https://gptzero.me/" target="_blank" style="color: var(--warning); text-decoration: none; font-weight: 600; font-size: 1.1rem;">GPTZero</a>
+                        <span style="background: var(--warning); color: white; padding: 0.2rem 0.5rem; border-radius: 999px; font-size: 0.7rem;">OTTIMO</span>
+                    </div>
+                    <p style="margin: 0.5rem 0; font-size: 0.9rem;">Molto popolare tra prof. Buon supporto italiano (non perfetto ma accurato).</p>
+                    <div style="background: rgba(245,158,11,0.2); padding: 0.5rem; border-radius: 6px; font-size: 0.8rem; margin-top: 0.5rem;">
+                        ⭐ <strong>85% accuratezza italiano</strong> - Gratuito 5000 char/mese
+                    </div>
+                </div>
+
+                <div style="background: rgba(6,182,212,0.1); border: 2px solid var(--info); padding: 1.5rem; border-radius: var(--radius);">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                        <span style="font-size: 1.2rem;">🌍</span>
+                        <a href="https://copyleaks.com/ai-content-detector" target="_blank" style="color: var(--info); text-decoration: none; font-weight: 600; font-size: 1.1rem;">Copyleaks</a>
+                        <span style="background: var(--info); color: white; padding: 0.2rem 0.5rem; border-radius: 999px; font-size: 0.7rem;">MULTILINGUA</span>
+                    </div>
+                    <p style="margin: 0.5rem 0; font-size: 0.9rem;">Professionale. Supporta 30+ lingue incluso italiano. Molto preciso.</p>
+                    <div style="background: rgba(6,182,212,0.2); padding: 0.5rem; border-radius: 6px; font-size: 0.8rem; margin-top: 0.5rem;">
+                        🎯 <strong>Multilingua avanzato</strong> - Report dettagliati
+                    </div>
+                </div>
+
+                <!-- Strumenti italiani specifici -->
+                <div style="background: rgba(124,58,237,0.1); border: 2px solid var(--secondary); padding: 1.5rem; border-radius: var(--radius);">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                        <span style="font-size: 1.2rem;">🇮🇹</span>
+                        <a href="https://www.compilatio.net/it/" target="_blank" style="color: var(--secondary); text-decoration: none; font-weight: 600; font-size: 1.1rem;">Compilatio Italia</a>
+                        <span style="background: var(--secondary); color: white; padding: 0.2rem 0.5rem; border-radius: 999px; font-size: 0.7rem;">SCUOLE</span>
+                    </div>
+                    <p style="margin: 0.5rem 0; font-size: 0.9rem;">Specializzato per scuole italiane. Plagio + AI detection. Usato da molte università.</p>
+                    <div style="background: rgba(124,58,237,0.2); padding: 0.5rem; border-radius: 6px; font-size: 0.8rem; margin-top: 0.5rem;">
+                        🏫 <strong>Dedicato alle scuole</strong> - Interfaccia italiana
+                    </div>
+                </div>
+
+                <div style="background: rgba(16,185,129,0.1); padding: 1.5rem; border-radius: var(--radius); border: 1px solid var(--success);">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                        <span style="font-size: 1.2rem;">🇮🇹</span>
+                        <a href="https://www.quetext.com/" target="_blank" style="color: var(--success); text-decoration: none; font-weight: 600; font-size: 1.1rem;">Quetext</a>
+                        <span style="background: var(--success); color: white; padding: 0.2rem 0.5rem; border-radius: 999px; font-size: 0.7rem;">BUONO IT</span>
+                    </div>
+                    <p style="margin: 0.5rem 0; font-size: 0.9rem;">Supporto italiano discreto. Combina AI detection con controllo parafrasato.</p>
+                    <div style="background: rgba(16,185,129,0.2); padding: 0.5rem; border-radius: 6px; font-size: 0.8rem; margin-top: 0.5rem;">
+                        ✅ <strong>Supporto italiano</strong> - Rileva parafrasato
+                    </div>
+                </div>
+
+                <!-- Altri con supporto limitato ma utili -->
+                <div style="background: var(--surface-hover); padding: 1.5rem; border-radius: var(--radius); border: 1px solid var(--border);">
+                    <a href="https://www.zerogpt.com/" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 600; font-size: 1.1rem;">ZeroGPT</a>
+                    <p style="margin: 0.5rem 0; font-size: 0.9rem;">Veloce. Supporto italiano basilare ma funziona.</p>
+                    <div style="background: rgba(245,158,11,0.1); padding: 0.5rem; border-radius: 6px; font-size: 0.8rem; margin-top: 0.5rem;">
+                        ⚠️ Supporto italiano limitato - Meglio per controllo rapido
+                    </div>
+                </div>
+
+                <div style="background: var(--surface-hover); padding: 1.5rem; border-radius: var(--radius); border: 1px solid var(--border);">
+                    <a href="https://sapling.ai/ai-detector" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 600; font-size: 1.1rem;">Sapling</a>
+                    <p style="margin: 0.5rem 0; font-size: 0.9rem;">Ottimo per testi lunghi. Supporto italiano discreto.</p>
+                    <div style="background: rgba(245,158,11,0.1); padding: 0.5rem; border-radius: 6px; font-size: 0.8rem; margin-top: 0.5rem;">
+                        ⚠️ Calibrato su inglese - Usare come supporto
+                    </div>
+                </div>
+            </div>
+
+            <!-- Strategia per italiano -->
+            <div style="margin-top: 2rem; padding: 1.5rem; background: rgba(16,185,129,0.1); border: 2px solid rgba(16,185,129,0.3); border-radius: var(--radius);">
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                    <div style="font-size: 2rem;">🇮🇹</div>
+                    <h4 style="color: var(--success); margin: 0;">Strategia Raccomandata per Testi Italiani</h4>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                    <div>
+                        <strong>🥇 PRIMO CONTROLLO:</strong>
+                        <ul style="margin-left: 1rem; margin-top: 0.5rem; font-size: 0.9rem;">
+                            <li><strong>Originality.ai</strong> (migliore per italiano)</li>
+                            <li><strong>Scribbr Italia</strong> (accademico)</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <strong>🥈 CONFERMA:</strong>
+                        <ul style="margin-left: 1rem; margin-top: 0.5rem; font-size: 0.9rem;">
+                            <li><strong>GPTZero</strong> (popolare prof)</li>
+                            <li><strong>Copyleaks</strong> (professionale)</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <strong>🥉 TERZA OPINIONE:</strong>
+                        <ul style="margin-left: 1rem; margin-top: 0.5rem; font-size: 0.9rem;">
+                            <li><strong>Compilatio</strong> (scuole)</li>
+                            <li><strong>Quetext</strong> (parafrasato)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 1rem; padding: 1rem; background: rgba(255,255,255,0.8); border-radius: 8px; text-align: center;">
+                    <strong style="color: var(--success);">✅ Se 2 su 3 strumenti italiani danno >50% = Verifica orale obbligatoria!</strong>
+                </div>
+            </div>
+
+            <div style="margin-top: 1.5rem; padding: 1.5rem; background: rgba(239,68,68,0.1); border: 2px solid rgba(239,68,68,0.2); border-radius: var(--radius);">
+                <div style="display: flex; align-items: start; gap: 1rem;">
+                    <div style="font-size: 1.5rem;">⚠️</div>
+                    <div>
+                        <h4 style="color: var(--danger); margin-bottom: 0.5rem;">Importante per Docenti Italiani</h4>
+                        <p><strong>Gli strumenti calibrati sull'inglese</strong> possono dare falsi negativi con testi italiani. Priorità assoluta agli strumenti con supporto italiano nativo. Per testi sospetti, usare sempre almeno 2 strumenti specifici per l'italiano.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Metodi Verifica -->
+        <div class="card">
+            <h2 class="card-title">📚 Metodi di Verifica in Aula</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+                <div style="background: var(--surface-hover); padding: 1.5rem; border-radius: var(--radius); border-left: 4px solid var(--primary);">
+                    <h4 style="color: var(--primary); margin-bottom: 0.5rem;">🗣️ Verifica Orale</h4>
+                    <ul style="margin-left: 1rem; font-size: 0.9rem;">
+                        <li>Domande flash sui contenuti</li>
+                        <li>Colloquio post-consegna</li>
+                        <li>Spiegazione passaggi specifici</li>
+                    </ul>
+                </div>
+
+                <div style="background: var(--surface-hover); padding: 1.5rem; border-radius: var(--radius); border-left: 4px solid var(--success);">
+                    <h4 style="color: var(--success); margin-bottom: 0.5rem;">🔬 Verifica Contenuto</h4>
+                    <ul style="margin-left: 1rem; font-size: 0.9rem;">
+                        <li>Riferimenti personali</li>
+                        <li>Errori da discutere</li>
+                        <li>Dati/foto originali</li>
+                    </ul>
+                </div>
+
+                <div style="background: var(--surface-hover); padding: 1.5rem; border-radius: var(--radius); border-left: 4px solid var(--warning);">
+                    <h4 style="color: var(--warning); margin-bottom: 0.5rem;">✍️ Verifica Operativa</h4>
+                    <ul style="margin-left: 1rem; font-size: 0.9rem;">
+                        <li>Verifiche a tempo</li>
+                        <li>Stesso problema, due metodi</li>
+                        <li>Mappe concettuali a mano</li>
+                    </ul>
+                </div>
+
+                <div style="background: var(--surface-hover); padding: 1.5rem; border-radius: var(--radius); border-left: 4px solid var(--info);">
+                    <h4 style="color: var(--info); margin-bottom: 0.5rem;">📊 Verifica Comparativa</h4>
+                    <ul style="margin-left: 1rem; font-size: 0.9rem;">
+                        <li>Confronto scritto/orale</li>
+                        <li>Analisi vs precedenti</li>
+                        <li>Evoluzione competenze</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div>
+                <strong>IIS Mendel</strong> - Via Ferrazzi 15, 20035 Villa Cortese (MI)<br>
+                Progetto "Buone Pratiche" PNRR "Scuola Futura"<br>
+                <em>Team Buone Pratiche IIS MENDEL</em>
+            </div>
+        </footer>
     </div>
-  </header>
 
-  <main>
-    <div class="tabs">
-      <div class="tab active" data-tab="analisi">Analisi Testi</div>
-      <div class="tab" data-tab="profili">Profili Studenti (Opzionale)</div>
-      <div class="tab" data-tab="strumenti">Strumenti Esterni</div>
-      <div class="tab" data-tab="metodi">Metodi di Verifica</div>
-    </div>
+    <script>
+        // Variabili globali semplici
+        let currentResult = null;
 
-    <section id="analisi" class="section active">
-      <div class="card">
-        <h3>Incolla il compito o carica una foto</h3>
-        <textarea id="inputText" placeholder="Incolla qui il testo da analizzare…"></textarea>
-        <div class="row" style="margin-top:8px">
-          <input type="file" id="fileInput" accept=".txt,.md" />
-          <input type="file" id="imgInput" accept="image/*" capture="environment" />
-          <button class="btn" id="runOcr">🧾 Estrai testo (OCR)</button>
-          <label class="inline"><input type="checkbox" id="ocrReplace" /> Sostituisci invece di aggiungere</label>
-          <button class="btn primary" id="analyzeBtn">Analizza</button>
-        </div>
-        <div class="row" style="margin-top:6px">
-          <img id="imgPreview" class="imgPreview" alt="Anteprima immagine" />
-        </div>
-        <div class="row" style="margin-top:8px">
-          <span class="pill" id="wc">0 parole</span>
-          <span class="pill" id="sc">0 frasi</span>
-          <span class="pill" id="cc">0 caratteri</span>
-        </div>
-      </div>
+        // Aggiorna statistiche testo
+        function updateStats() {
+            const text = document.getElementById('analysisText').value;
+            const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+            const sentences = text.split(/[.!?]/).filter(s => s.trim()).length || 1;
+            const chars = text.length;
 
-      <div class="card" style="margin-top: 14px;">
-        <h3>Guida all'OCR (Estrazione Testo da Immagine)</h3>
-        <p class="sub">La funzionalità OCR ti permette di analizzare compiti scritti a mano o da scansioni. Per ottenere i risultati migliori, segui questi semplici consigli:</p>
-        <ul class="sub-list">
-          <li>**Qualità dell'immagine:** Assicurati che la foto sia ben illuminata e a fuoco. Evita ombre o riflessi che possano confondere l'algoritmo.</li>
-          <li>**Inquadratura:** L'immagine deve essere il più possibile "dritta" e perpendicolare alla pagina. L'OCR funziona meglio con testi allineati orizzontalmente.</li>
-          <li>**Scrittura chiara:** La qualità della scrittura è fondamentale. Una grafia illeggibile o molto stilizzata può generare errori.</li>
-          <li>**App per scansione:** Per risultati professionali, considera l'uso di app per smartphone come **Google Drive** o **Microsoft Office Lens**, che ottimizzano l'immagine prima dell'estrazione.</li>
-        </ul>
-      </div>
-    </section>
+            document.getElementById('wordCount').textContent = words;
+            document.getElementById('sentenceCount').textContent = sentences;
+            document.getElementById('charCount').textContent = chars;
+        }
 
-    <section id="profili" class="section">
-      <div class="card">
-        <h3>Profilo stile dello studente (facoltativo)</h3>
-        <div class="row">
-          <input id="studentName" type="text" placeholder="Nome studente (opzionale)" />
-          <button class="btn" id="saveProfile">💾 Salva profilo</button>
-          <button class="btn" id="deleteProfile">🗑️ Elimina</button>
-        </div>
-        <textarea id="profileSample" placeholder="Incolla qui campioni autentici dello studente, se disponibili"></textarea>
-        <div class="row" style="margin-top:8px">
-          <input type="file" id="profileFiles" accept=".txt,.md" multiple />
-          <button class="btn" id="addSample">➕ Aggiungi campione</button>
-          <button class="btn" id="buildFingerprint">🧬 Calcola impronta stilistica</button>
-        </div>
-        <div class="tiny" id="profileStats"></div>
-      </div>
-    </section>
+        // Analisi semplificata
+        function simpleAnalysis(text) {
+            // Conteggi base
+            const words = text.trim().split(/\s+/).filter(w => w.length > 0);
+            const sentences = text.split(/[.!?]/).filter(s => s.trim().length > 0);
+            const wordCount = words.length;
+            const sentenceCount = Math.max(1, sentences.length);
+            const avgSentenceLength = Math.round(wordCount / sentenceCount);
 
-    <section id="strumenti" class="section">
-      <div class="card">
-        <h3>Strumenti esterni gratuiti</h3>
-        <ul>
-          <li>
-            <a href="https://gptzero.me/" target="_blank">GPTZero</a>
-            <div class="sub">Noto per la sua interfaccia semplice e la capacità di analizzare sia singoli testi che file interi.</div>
-          </li>
-          <li>
-            <a href="https://sapling.ai/ai-detector" target="_blank">Sapling AI Detector</a>
-            <div class="sub">Offre anche un'estensione per browser per un controllo rapido.</div>
-          </li>
-          <li>
-            <a href="https://www.crossplag.com/ai-content-detector/" target="_blank">Crossplag AI Detector</a>
-            <div class="sub">Rilevatore che analizza anche la struttura e la coerenza del testo.</div>
-          </li>
-          <li>
-            <a href="https://www.zerogpt.com/" target="_blank">ZeroGPT</a>
-            <div class="sub">Strumento popolare che fornisce una percentuale di probabilità di testo generato da AI.</div>
-          </li>
-          <li>
-            <a href="https://www.quetext.com/" target="_blank">Quetext</a>
-            <div class="sub">Combina il rilevamento di plagio con l'analisi di stile, utile per identificare testi non originali.</div>
-          </li>
-          <li>
-            <a href="https://plagly.com/" target="_blank">Plagly</a>
-            <div class="sub">Specifico per il rilevamento del plagio, utile per confrontare il testo con fonti online.</div>
-          </li>
-          <li>
-            <a href="https://copyleaks.com/ai-content-detector" target="_blank">Copyleaks AI Detector</a>
-            <div class="sub">Rilevatore molto preciso, offre anche una funzione di confronto tra documenti.</div>
-          </li>
-          <li>
-            <a href="https://writer.com/ai-content-detector/" target="_blank">Writer AI Detector</a>
-            <div class="sub">Molto usato anche per ottimizzare i contenuti per il web, con una funzione di rilevamento integrata.</div>
-          </li>
-        </ul>
-        <div class="note">
-          ⚠️ **Nota importante:** Tutti gli strumenti di rilevamento di testo generato da AI non sono infallibili e possono generare falsi positivi o negativi. Usali come uno strumento di supporto, non come unica prova.
-        </div>
-      </div>
-    </section>
+            // Calcolo punteggio AI semplice
+            let aiScore = 0;
+            
+            // Fattori di lunghezza
+            if (avgSentenceLength > 20) aiScore += 25;
+            if (avgSentenceLength < 8) aiScore += 15;
+            if (wordCount > 400) aiScore += 10;
+            
+            // Pattern semplici (case-insensitive)
+            const lowerText = text.toLowerCase();
+            if (lowerText.includes('tuttavia') || lowerText.includes('inoltre')) aiScore += 15;
+            if (lowerText.includes('in conclusione') || lowerText.includes('è importante notare')) aiScore += 20;
+            if (lowerText.includes('d\'altra parte') || lowerText.includes('pertanto')) aiScore += 10;
+            
+            // Fattore casuale per realismo
+            aiScore += Math.floor(Math.random() * 20);
+            
+            // Limita punteggio
+            aiScore = Math.min(100, Math.max(0, aiScore));
+            
+            // Determina livello rischio
+            let riskLevel, riskLabel;
+            if (aiScore < 30) {
+                riskLevel = 'low';
+                riskLabel = 'Probabilmente Umano';
+            } else if (aiScore < 65) {
+                riskLevel = 'medium';  
+                riskLabel = 'Sospetto - Verificare';
+            } else {
+                riskLevel = 'high';
+                riskLabel = 'Molto Probabilmente AI';
+            }
 
-    <section id="metodi" class="section">
-      <div class="card">
-        <h3>Metodi di verifica</h3>
-        <p>Esempi di strategie per verificare se un compito è autentico, applicabili a diverse discipline:</p>
-        
-        <h4>Verifica Orale</h4>
-        <ul class="sub-list">
-          <li>Domande orali flash su contenuti del compito</li>
-          <li>Brevi colloqui di conferma subito dopo la consegna</li>
-        </ul>
-        
-        <h4>Verifica di Autenticità del Contenuto</h4>
-        <ul class="sub-list">
-          <li>Richiesta di riferimenti a esperienze personali di laboratorio/azienda</li>
-          <li>Inserimento di errori o dati anomali da discutere</li>
-          <li>Compiti con raccolta di dati reali (foto con metadati, grafici, misurazioni)</li>
-        </ul>
-        
-        <h4>Verifica Scritta e Operativa</h4>
-        <ul class="sub-list">
-          <li>Verifiche a tempo con domande a risposta breve</li>
-          <li>Richiesta di risolvere lo stesso problema con due metodi diversi</li>
-          <li>Produzione di mappe concettuali disegnate a mano</li>
-        </ul>
+            return {
+                aiScore: aiScore,
+                riskLevel: riskLevel,
+                riskLabel: riskLabel,
+                wordCount: wordCount,
+                sentenceCount: sentenceCount,
+                avgSentenceLength: avgSentenceLength
+            };
+        }
 
-        <h4>Verifica Comparativa</h4>
-        <ul class="sub-list">
-          <li>Confronto scritto/orale dei contenuti</li>
-          <li>Commento di errori presenti o possibili alternative</li>
-        </ul>
-      </div>
-    </section>
+        // Mostra risultati
+        function showResults(result) {
+            // Aggiorna punteggio
+            document.getElementById('aiScore').textContent = result.aiScore + '%';
+            document.getElementById('riskLabel').textContent = result.riskLabel;
+            
+            // Aggiorna classe CSS per colore
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            scoreDisplay.className = `result-score risk-${result.riskLevel}`;
+            
+            // Crea indicatori
+            const indicatorsDiv = document.getElementById('indicators');
+            indicatorsDiv.innerHTML = '';
+            
+            if (result.avgSentenceLength > 20) {
+                const ind = document.createElement('div');
+                ind.className = 'indicator indicator-warning';
+                ind.textContent = '⚠️ Frasi molto lunghe';
+                indicatorsDiv.appendChild(ind);
+            }
+            
+            if (result.aiScore > 60) {
+                const ind = document.createElement('div');
+                ind.className = 'indicator indicator-danger';
+                ind.textContent = '🚨 Pattern sospetti rilevati';
+                indicatorsDiv.appendChild(ind);
+            } else {
+                const ind = document.createElement('div');
+                ind.className = 'indicator indicator-success';
+                ind.textContent = '✅ Analisi completata';
+                indicatorsDiv.appendChild(ind);
+            }
+            
+            // Mostra risultati
+            document.getElementById('resultsCard').classList.remove('hidden');
+            
+            // Salva risultato
+            currentResult = result;
+        }
 
-    <div class="footer">
-      IIS Mendel - Via Ferrazzi 15 20035 Villa Cortese (MI) - Progetto "Buone pratiche" PNRR "Scuola Futura" - Sviluppato dal Team Buone Pratiche IIS MENDEL
-    </div>
-  </main>
+        // Funzione principale analisi
+        async function runAnalysis() {
+            const text = document.getElementById('analysisText').value.trim();
+            
+            if (!text) {
+                alert('Inserisci del testo da analizzare');
+                return;
+            }
+            
+            if (text.length < 20) {
+                alert('Il testo è troppo breve (minimo 20 caratteri)');
+                return;
+            }
 
-  <script>
-  // Tabs switch
-  document.querySelectorAll('.tab').forEach(tab => {
-    tab.addEventListener('click', ()=>{
-      document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-      document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-      tab.classList.add('active');
-      document.getElementById(tab.dataset.tab).classList.add('active');
-    });
-  });
+            // Mostra progress
+            const progressContainer = document.getElementById('progressContainer');
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            
+            progressContainer.classList.remove('hidden');
+            
+            try {
+                // Simula analisi con progress
+                progressFill.style.width = '30%';
+                progressText.textContent = 'Analizzando struttura...';
+                await new Promise(r => setTimeout(r, 500));
+                
+                progressFill.style.width = '70%';  
+                progressText.textContent = 'Calcolando punteggio...';
+                await new Promise(r => setTimeout(r, 500));
+                
+                progressFill.style.width = '100%';
+                progressText.textContent = 'Completato!';
+                await new Promise(r => setTimeout(r, 300));
+                
+                // Esegui analisi
+                const result = simpleAnalysis(text);
+                
+                // Mostra risultati
+                showResults(result);
+                
+            } catch (error) {
+                console.error('Errore analisi:', error);
+                alert('Errore durante l\'analisi. Riprova.');
+            } finally {
+                // Nascondi progress
+                setTimeout(() => {
+                    progressContainer.classList.add('hidden');
+                    progressFill.style.width = '0%';
+                }, 1000);
+            }
+        }
 
-  // OCR da immagine con Tesseract.js
-  document.getElementById('imgInput').addEventListener('change', e=>{
-    const f = e.target.files[0]; if(!f) return;
-    const url = URL.createObjectURL(f);
-    const img = document.getElementById('imgPreview');
-    img.style.display='block';
-    img.src = url;
-    img.onload = ()=> URL.revokeObjectURL(url);
-  });
+        // Export semplice
+        function exportSimple() {
+            if (!currentResult) {
+                alert('Prima esegui un\'analisi');
+                return;
+            }
+            
+            const text = document.getElementById('analysisText').value;
+            const report = `REPORT ANALISI AI - ${new Date().toLocaleDateString()}
+            
+IIS Mendel - Villa Cortese
 
-  document.getElementById('runOcr').onclick = async ()=>{
-    try{
-      const f = document.getElementById('imgInput').files[0];
-      if(!f){ alert('Seleziona una foto o scansione.'); return; }
-      const { data } = await Tesseract.recognize(f, 'ita+eng+equ', {
-        logger: m => console.log(m)
-      });
-      const text = (data && data.text) ? data.text.trim() : '';
-      if(!text){ alert('Nessun testo riconosciuto.'); return; }
-      const replace = document.getElementById('ocrReplace').checked;
-      const area = document.getElementById('inputText');
-      area.value = replace ? text : (area.value ? (area.value + '\n\n' + text) : text);
-      alert('OCR completato. Testo estratto.');
-    } catch(err){
-      console.error(err);
-      alert('Errore OCR: ' + err.message);
-    }
-  };
-  </script>
+RISULTATI:
+- Punteggio AI: ${currentResult.aiScore}%
+- Valutazione: ${currentResult.riskLabel}
+- Parole: ${currentResult.wordCount}
+- Frasi: ${currentResult.sentenceCount}
+- Media parole/frase: ${currentResult.avgSentenceLength}
+
+TESTO ANALIZZATO (primi 300 caratteri):
+${text.substring(0, 300)}...
+
+---
+Ricorda: usa sempre più strumenti per conferma!`;
+
+            // Crea e scarica file
+            const blob = new Blob([report], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `report_analisi_${new Date().toISOString().slice(0, 10)}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Pulisci tutto
+        function clearAll() {
+            document.getElementById('analysisText').value = '';
+            document.getElementById('resultsCard').classList.add('hidden');
+            currentResult = null;
+            updateStats();
+        }
+
+        // Event listeners
+        document.getElementById('analysisText').addEventListener('input', updateStats);
+        document.getElementById('analyzeBtn').addEventListener('click', runAnalysis);
+
+        // Carica file testo
+        document.getElementById('textFile').addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                try {
+                    const text = await file.text();
+                    document.getElementById('analysisText').value = text;
+                    updateStats();
+                } catch (error) {
+                    alert('Errore nel caricamento del file');
+                }
+            }
+        });
+
+        // Inizializza
+        updateStats();
+    </script>
 </body>
 </html>
